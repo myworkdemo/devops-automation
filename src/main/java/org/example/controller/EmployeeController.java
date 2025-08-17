@@ -2,7 +2,7 @@ package org.example.controller;
 
 import org.example.exception.handler.EmployeeNotFoundException;
 import org.example.model.Employee;
-import org.example.service.EmployeeService;
+//import org.example.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class EmployeeController {
 
     private static List<Employee> employees = new ArrayList<>();
 
-    @Autowired
-    private EmployeeService employeeService;
+//    @Autowired
+//    private EmployeeService employeeService;
 
     public EmployeeController() {
         getEmployees();
@@ -26,28 +26,28 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<Employee>> fetchEmployees() {
-        List<Employee> employees = employeeService.findEmployees();
+//        List<Employee> employees = employeeService.findEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @GetMapping("/{empId}")
     public ResponseEntity<Employee> fetchEmployees(@PathVariable Long empId) {
-//        Employee employee = employees.stream().filter(emp -> emp.getEmpId().equals(empId))
-//                .findFirst().orElseThrow(() -> new EmployeeNotFoundException("Employee ID with " + empId + " Not Found"));
+        Employee employee = employees.stream().filter(emp -> emp.getEmpId().equals(empId))
+                .findFirst().orElseThrow(() -> new EmployeeNotFoundException("Employee ID with " + empId + " Not Found"));
 
-        Employee employee = employeeService.findEmployeeById(empId)
-                .orElseThrow(() -> new EmployeeNotFoundException("Employee ID with " + empId + " Not Found"));
+//        Employee employee = employeeService.findEmployeeById(empId)
+//                .orElseThrow(() -> new EmployeeNotFoundException("Employee ID with " + empId + " Not Found"));
 
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
-//        Employee newEmployee =
-//                new Employee(employee.getEmpName(), employee.getEmpAddress(), employee.getEmpDepartment(), employee.getSalary());
-//        newEmployee.setEmpId(employees.getLast().getEmpId() + 1);
-//        employees.add(newEmployee);
-        Employee newEmployee = employeeService.create(employee);
+        Employee newEmployee =
+                new Employee(employee.getEmpName(), employee.getEmpAddress(), employee.getEmpDepartment(), employee.getSalary());
+        newEmployee.setEmpId(employees.getLast().getEmpId() + 1);
+        employees.add(newEmployee);
+//        Employee newEmployee = employeeService.create(employee);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 
